@@ -1,0 +1,20 @@
+{
+  "name": "ovh-dns-update",
+  "version": "1.0.0",
+  "description": "Update dns record",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "xontik@gmail.com",
+  "repository": {
+    "url": "https://github.com/xontik/ovh-dns"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "ovh": "^2.0.3",
+    "public-ip": "^4.0.1"
+  }
+}
