@@ -9,12 +9,12 @@ const ovh = require('ovh')({
 const publicIp = require('public-ip');
 const cron = require('node-cron');
 
-const zone = 'xontik.com';
+const zone = process.env.ZONE_DNS;
 const params = {
-  fieldType: 'A',
-  subDomain: '*'
+  fieldType: process.env.FIELD_TYPE,
+  subDomain: process.env.SUB_DOMAIN
 };
-const crontInterval = '* * * * *'
+const crontInterval = process.env.CRON_SCHEDULE
 
 async function getRecord(zone, params) {
   const records = await ovh.requestPromised('GET', `/domain/zone/${zone}/record`, params);
