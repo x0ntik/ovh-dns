@@ -40,6 +40,8 @@ cron.schedule(`${crontInterval}`, async () => {
       target: ip
     });
 
+    const refresh = await ovh.requestPromised('POST', ` /domain/zone/${zone}/refresh`);
+
   } catch (e) {
     console.error(e)
   }
