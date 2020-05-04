@@ -11,8 +11,4 @@ RUN npm install
 
 COPY src src
 
-ENV APP_KEY 'app_key'
-ENV APP_SECRET 'app_secret'
-ENV APP_CONSUMER_KEY 'app_consumer_key'
-
 ENTRYPOINT [ "node", "src/index.js" ]
