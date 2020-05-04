@@ -1,16 +1,20 @@
+require('dotenv').config()
+
 const ovh = require('ovh')({
   endpoint: 'ovh-eu',
-  appKey: 'QhINMgIEGOu4zjDS',
-  appSecret: 'DsPDNJcOCgHkzHrYy1kpf9RoiRaPKn9y',
-  consumerKey: 'Q0hdgiTigi6s4M9wtujc1l68zadXBuIr'
+  appKey: process.env.APP_KEY,
+  appSecret: process.env.APP_SECRET,
+  consumerKey: process.env.APP_CONSUMER_KEY,
 });
 const publicIp = require('public-ip');
+const cron = require('node-cron');
 
 const zone = 'xontik.com';
 const params = {
   fieldType: 'A',
   subDomain: '*'
 };
+const crontInterval = '* * * * *'
 
 async function getRecord(zone, params) {
   const records = await ovh.requestPromised('GET', `/domain/zone/${zone}/record`, params);
@@ -21,7 +25,7 @@ async function getRecord(zone, params) {
   return await ovh.requestPromised('GET', `/domain/zone/${zone}/record/${records[0]}`, {});
 }
 
-(async () => {
+cron.schedule(`${crontInterval}`, async () => {
   try {
     const [record, ip] = await Promise.all([getRecord(zone, params), publicIp.v4()]);
 
@@ -30,6 +34,8 @@ async function getRecord(zone, params) {
       return
     }
 
+    console.log(`Changing ip from ${record.target} to ${ip}`);
+
     const putRequest = await ovh.requestPromised('PUT', `/domain/zone/${zone}/record/${record.id}`, {
       target: ip
     });
@@ -37,6 +43,5 @@ async function getRecord(zone, params) {
   } catch (e) {
     console.error(e)
   }
+}).start()
 
-
-})()

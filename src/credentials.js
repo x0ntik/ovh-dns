@@ -1,7 +1,9 @@
+require('dotenv').config()
+
 const ovh = require('ovh')({
   endpoint: 'ovh-eu',
-  appKey: 'QhINMgIEGOu4zjDS',
-  appSecret: 'DsPDNJcOCgHkzHrYy1kpf9RoiRaPKn9y'
+  appKey: process.env.APP_KEY,
+  appSecret: process.env.APP_SECRET
 });
 
 ovh.request('POST', '/auth/credential', {

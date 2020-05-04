@@ -1,0 +1,12 @@
+version: '3.0'
+services:
+  ovh-dns:
+    build: .
+    container_name: 'ovh_dns'
+    stop_grace_period: '1s'
+    environment:
+      - APP_KEY=${APP_KEY}
+      - APP_SECRET=${APP_SECRET}
+      - APP_CONSUMER_KEY=${APP_CONSUMER_KEY}
+
+
