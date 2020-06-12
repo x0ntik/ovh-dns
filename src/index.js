@@ -30,10 +30,9 @@ cron.schedule(`${crontInterval}`, async () => {
         subDomain: subdomain
       };
       const [record, ip] = await Promise.all([getRecord(zone, params), publicIp.v4()]);
-      console.log(ip)
-      console.log(record)
+      console.log(`Subdomain : -->${subdomain}<--`)
       if (record.target === ip) {
-        console.log('Already good ip, do nothing')
+        console.log(`Already good ip do nothing`)
         continue;
       }
 
