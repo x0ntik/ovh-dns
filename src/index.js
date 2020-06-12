@@ -10,12 +10,9 @@ const publicIp = require('public-ip');
 const cron = require('node-cron');
 
 const zone = process.env.ZONE_DNS;
-const params = {
-  fieldType: process.env.FIELD_TYPE,
-  subDomain: process.env.SUB_DOMAIN
-};
-const crontInterval = process.env.CRON_SCHEDULE
 
+const crontInterval = process.env.CRON_SCHEDULE
+const subDomains = process.env.SUB_DOMAINS.split(',')
 async function getRecord(zone, params) {
   const records = await ovh.requestPromised('GET', `/domain/zone/${zone}/record`, params);
 
@@ -26,24 +23,31 @@ async function getRecord(zone, params) {
 }
 
 cron.schedule(`${crontInterval}`, async () => {
-  try {
-    const [record, ip] = await Promise.all([getRecord(zone, params), publicIp.v4()]);
+  for (const subdomain of subDomains) {
+    try {
+      const params = {
+        fieldType: process.env.FIELD_TYPE,
+        subDomain: subdomain
+      };
+      const [record, ip] = await Promise.all([getRecord(zone, params), publicIp.v4()]);
+      console.log(ip)
+      console.log(record)
+      if (record.target === ip) {
+        console.log('Already good ip, do nothing')
+        continue;
+      }
 
-    if (record.target === ip) {
-      console.log('Already good ip, do nothing')
-      return
+      console.log(`Changing ip from ${record.target} to ${ip}`);
+
+      const putRequest = await ovh.requestPromised('PUT', `/domain/zone/${zone}/record/${record.id}`, {
+        target: ip
+      });
+
+      const refresh = await ovh.requestPromised('POST', `/domain/zone/${zone}/refresh`);
+
+    } catch (e) {
+      console.error(e)
     }
-
-    console.log(`Changing ip from ${record.target} to ${ip}`);
-
-    const putRequest = await ovh.requestPromised('PUT', `/domain/zone/${zone}/record/${record.id}`, {
-      target: ip
-    });
-
-    const refresh = await ovh.requestPromised('POST', ` /domain/zone/${zone}/refresh`);
-
-  } catch (e) {
-    console.error(e)
   }
 }).start()
 
