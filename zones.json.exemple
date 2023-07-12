@@ -1,0 +1,15 @@
+[
+  {
+    "name": "aaaa.com",
+    "subDomains": [
+      "*"
+    ]
+  },
+  {
+    "name": "bbbb.fr",
+    "subDomains": [
+      "www",
+      "ftp"
+    ]
+  }
+]

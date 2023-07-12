@@ -9,8 +9,6 @@ services:
       - APP_KEY=${APP_KEY}
       - APP_SECRET=${APP_SECRET}
       - APP_CONSUMER_KEY=${APP_CONSUMER_KEY}
-      - ZONE_DNS=${ZONE_DNS}
-      - SUB_DOMAINS=${SUB_DOMAINS}
       - FIELD_TYPE=${FIELD_TYPE}
       - CRON_SCHEDULE=${CRON_SCHEDULE}
 
