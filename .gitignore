@@ -184,3 +184,4 @@ fabric.properties
 # End of https://www.gitignore.io/api/node,dotenv,phpstorm
 
 zones.json
+certs/*

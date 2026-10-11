@@ -1,4 +1,4 @@
-FROM node:14
+FROM node:18
 
 WORKDIR /app
 
@@ -12,4 +12,4 @@ RUN npm install
 COPY src ./
 copy zones.json ./
 
-ENTRYPOINT [ "node", "src/index.js" ]
+ENTRYPOINT [ "node", "index.js" ]
