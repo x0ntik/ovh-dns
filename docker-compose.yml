@@ -1,15 +1,13 @@
 version: '3.0'
+
 services:
   ovh-dns:
     build: .
-    container_name: 'ovh_dns'
-    stop_grace_period: '1s'
+    container_name: ovh_dns
+    stop_grace_period: 1s
     restart: always
+    env_file: .env
     environment:
-      - APP_KEY=${APP_KEY}
-      - APP_SECRET=${APP_SECRET}
-      - APP_CONSUMER_KEY=${APP_CONSUMER_KEY}
-      - FIELD_TYPE=${FIELD_TYPE}
-      - CRON_SCHEDULE=${CRON_SCHEDULE}
-
-
+      NODE_EXTRA_CA_CERTS: /certs/opnsense-ca.pem
+    volumes:
+      - ./certs/opnsense-ca.pem:/certs/opnsense-ca.pem:ro
